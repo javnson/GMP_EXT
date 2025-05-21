@@ -30,7 +30,10 @@ HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, GPIO_PIN_SET);
 ctl_step_pos_encoder(&pos_enc, 0x3FFF - (gmp_l2b16(enc_res) & 0x3FFF));
 */
 
+#include <gmp_core.h>
+
 #include <ctl/component/motor_control/basic/encoder.h>
+
 
 #ifndef _FILE_AS5048A_H_
 #define _FILE_AS5048A_H_
@@ -74,7 +77,7 @@ ctrl_gt ctl_step_as5048a_pos_encoder(ext_as5048a_encoder_t *enc)
     uint16_t enc_res = 0;
 
     gmp_hal_gpio_write(enc->ncs, 0);
-    gmp_hal_spi_read_write(enc->spi, enc_req, (uint8_t *)&enc_res, 2);
+    gmp_hal_spi_read_write(enc->spi, (data_gt *)enc_req, (data_gt *)&enc_res, 2);
     gmp_hal_gpio_write(enc->ncs, 1);
 
     // record raw data
