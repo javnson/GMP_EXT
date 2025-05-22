@@ -48,11 +48,11 @@ typedef struct _tag_ext_as5048a_encoder_t
     uint32_t raw;
 
     // offset,
-    // position + offset means the true position
+    // position - offset means the true position
     ctrl_gt offset;
 
     // pole_pairs
-    // poles*(position + offset) = Electrical position
+    // poles*(position - offset) = Electrical position
     uint16_t pole_pairs;
 
     // uint32_t p.u. base value
@@ -110,5 +110,13 @@ ctrl_gt ctl_step_as5048a_pos_encoder(ext_as5048a_encoder_t *enc)
 
     return enc->encif.elec_position;
 }
+
+// Set offset of encoder
+GMP_STATIC_INLINE
+void ctl_set_as5048a_pos_encoder_offset(ext_as5048a_encoder_t *enc, uint32_t raw)
+{
+    enc->offset = float2ctrl(raw / enc->position_base);
+}
+
 
 #endif // _FILE_AS5048A_H_
